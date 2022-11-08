@@ -2,6 +2,7 @@ package com.betterLife.habitsBuilder.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -70,9 +71,10 @@ public class Task {
     @Column
     private boolean sunday = false;
  
-    @ManyToMany
     @JsonIgnore
-    private List<DayLife> dayLifes;
+    @ManyToMany
+    (mappedBy = "tasks")
+    private List<DayLife> dayLifes = new ArrayList<>();
 
 
 }

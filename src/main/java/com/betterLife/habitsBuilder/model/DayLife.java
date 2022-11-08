@@ -1,6 +1,7 @@
 package com.betterLife.habitsBuilder.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
@@ -27,10 +30,10 @@ public class DayLife {
     private LocalDate date;
 
     @ManyToMany
-    private List<Task> approvedTasks;
+    private List<Task> approvedTasks = new ArrayList<>();
 
     @ManyToMany
-    private List<Task> tasks;
-
+    @JoinColumn(name = "task_id")
+    private List<Task> tasks = new ArrayList<>();
 
 }

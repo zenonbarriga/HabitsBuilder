@@ -1,5 +1,6 @@
 package com.betterLife.habitsBuilder.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -27,4 +28,6 @@ public interface HabitsBuilderService {
     Optional <DayLife> getDayLifeById( long id );
 
     boolean deleteDayLifeById( long id );
+
+    DayLife getDayLifeByDate(LocalDate date) ;
 }

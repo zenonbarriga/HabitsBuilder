@@ -1,7 +1,9 @@
 package com.betterLife.habitsBuilder.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +72,17 @@ public class HabitsBuilderServiceImpl implements HabitsBuilderService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public DayLife getDayLifeByDate(LocalDate date) {
+        ArrayList<DayLife> allDayLifes = (ArrayList<DayLife>) dayLifeRepository.findAll();
+
+        ArrayList<DayLife> dl = (ArrayList<DayLife>) allDayLifes.stream()
+            .filter( daylife -> daylife.getDate().equals(date))
+            .collect(Collectors.toList());
+
+        return dl.size() > 0 ? dl.get(0) : null;
     }
     
 }
