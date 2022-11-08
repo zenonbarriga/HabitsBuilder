@@ -1,4 +1,4 @@
-package com.betterLife.habitsBuilder;
+package com.betterLife;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
