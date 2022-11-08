@@ -1,5 +1,6 @@
 package com.betterLife.habitsBuilder.model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,7 +23,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data 
+@AllArgsConstructor 
+@NoArgsConstructor
 @Entity
 @Table ( name = "tasks" )
 public class Task {
@@ -76,5 +81,18 @@ public class Task {
     (mappedBy = "tasks")
     private List<DayLife> dayLifes = new ArrayList<>();
 
+    public boolean dayOfWeekIsActive( java.time.DayOfWeek dayOfWeek ){
+        return switch ( dayOfWeek ) {
+            case SUNDAY -> this.sunday;
+            case MONDAY -> this.monday;
+            case TUESDAY -> this.tuesday;
+            case WEDNESDAY -> this.wednesday;
+            case THURSDAY -> this.thursday;
+            case FRIDAY -> this.friday;
+            case SATURDAY -> this.saturday;
+        };
 
+    }
 }
+
+

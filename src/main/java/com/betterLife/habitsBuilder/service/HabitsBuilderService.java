@@ -30,4 +30,6 @@ public interface HabitsBuilderService {
     boolean deleteDayLifeById( long id );
 
     DayLife getDayLifeByDate(LocalDate date) ;
+
+    ArrayList<Task> getTasksByDate( LocalDate date );
 }

@@ -1,5 +1,6 @@
 package com.betterLife.habitsBuilder.controller;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.betterLife.habitsBuilder.model.DayLife;
 import com.betterLife.habitsBuilder.model.Task;
 import com.betterLife.habitsBuilder.service.HabitsBuilderService;
+import com.betterLife.habitsBuilder.service.TaskFinder;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -17,6 +19,9 @@ public class DayLifeCreator {
 
     @Autowired
     HabitsBuilderService habitsBuilderService;
+
+    @Autowired
+    TaskFinder taskFinder;
 
     public DayLifeCreator(){
 
@@ -30,6 +35,9 @@ public class DayLifeCreator {
         
     }
 
+   
+
+
     public ArrayList<DayLife> createDayLifesByInterval(Task task, LocalDate initialDate, LocalDate endDate){
         
         ArrayList < DayLife > dayLifes = new ArrayList<>();
@@ -37,6 +45,9 @@ public class DayLifeCreator {
         for( LocalDate date = initialDate; 
                 date.isBefore( endDate ) || date.isEqual( endDate ); 
                 date = date.plusDays(1 ) ){
+
+                    if ( !task.dayOfWeekIsActive(date.getDayOfWeek()) ) { continue; }
+                    
 
                     DayLife existentDayLife = habitsBuilderService.getDayLifeByDate(date);
 

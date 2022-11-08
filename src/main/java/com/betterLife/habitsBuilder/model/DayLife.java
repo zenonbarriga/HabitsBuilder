@@ -9,9 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,5 +37,9 @@ public class DayLife {
     @ManyToMany
     @JoinColumn(name = "task_id")
     private List<Task> tasks = new ArrayList<>();
+
+    public double getScore(){
+        return ( approvedTasks.size() * 100 ) / ( approvedTasks.size() + tasks.size() );
+    }
 
 }

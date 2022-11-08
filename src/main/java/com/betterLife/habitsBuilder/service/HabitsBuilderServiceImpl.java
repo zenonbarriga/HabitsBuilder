@@ -17,6 +17,9 @@ import com.betterLife.habitsBuilder.repository.TaskRepository;
 public class HabitsBuilderServiceImpl implements HabitsBuilderService {
 
     @Autowired
+    TaskFinder taskFinder;
+
+    @Autowired
     TaskRepository taskRepository;
 
     @Autowired
@@ -46,6 +49,16 @@ public class HabitsBuilderServiceImpl implements HabitsBuilderService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public ArrayList<Task> getTasksByDate( LocalDate date ) {
+        ArrayList< Task > allTasks = ( ArrayList< Task > ) taskRepository.findAll();
+
+        ArrayList< Task > tasksWithDate = ( ArrayList< Task > ) allTasks.stream()
+            .filter( task -> taskFinder.taskContainsDate( task, date ) )
+            .collect(Collectors.toList());
+
+        return tasksWithDate;
     }
 
     @Override
