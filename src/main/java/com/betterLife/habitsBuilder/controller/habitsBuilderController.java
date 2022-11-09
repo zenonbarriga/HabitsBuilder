@@ -64,7 +64,7 @@ public class habitsBuilderController {
         return habitsBuilderService.getAllTask();
     }
 
-    @GetMapping( "/task/date/{date}")
+    @GetMapping( "/task/getbydate/{date}")
     public ResponseEntity <ArrayList<Task>> getTasksByDate( 
         @PathVariable ( value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date ){
         
@@ -77,9 +77,17 @@ public class habitsBuilderController {
         
         dayLifeCreator.recalculateDayLifes(habitsBuilderService.saveTask(task));
 
-        return
-        
-        new ResponseEntity<>(task , HttpStatus.CREATED);
+        return new ResponseEntity<>(task , HttpStatus.CREATED);
+    }
+
+    @PutMapping( "/task/update/{taskId}" )
+    public ResponseEntity < Task > updateTask (@RequestBody Task newTask, @PathVariable(value = "taskId") Long taskId ){
+        Task task = habitsBuilderService.getTaskById( taskId ).get();
+
+        taskFinder.deleteAllDayLifesFromTask( task );
+        dayLifeCreator.recalculateDayLifes(habitsBuilderService.saveTask( newTask ));
+
+        return new ResponseEntity<>(task , HttpStatus.CREATED);
     }
 
     @DeleteMapping( "/task/delete/{taskId}" )
