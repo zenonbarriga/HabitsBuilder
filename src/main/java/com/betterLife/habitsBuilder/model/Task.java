@@ -76,10 +76,15 @@ public class Task {
     @Column
     private boolean sunday = false;
  
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany
-    (mappedBy = "tasks")
-    private List<DayLife> dayLifes = new ArrayList<>();
+    (mappedBy = "approvedTasks")
+    private List<DayLife> ApprovedDayLifes = new ArrayList<>();
+
+     //@JsonIgnore
+     @ManyToMany
+     (mappedBy = "tasks")
+     private List<DayLife> dayLifes = new ArrayList<>();
 
     public boolean dayOfWeekIsActive( java.time.DayOfWeek dayOfWeek ){
         return switch ( dayOfWeek ) {

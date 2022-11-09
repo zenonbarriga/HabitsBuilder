@@ -1,4 +1,4 @@
-package com.betterLife.habitsBuilder.controller;
+package com.betterLife.habitsBuilder.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.betterLife.habitsBuilder.model.DayLife;
 import com.betterLife.habitsBuilder.model.Task;
-import com.betterLife.habitsBuilder.service.HabitsBuilderService;
-import com.betterLife.habitsBuilder.service.TaskFinder;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -33,6 +31,12 @@ public class DayLifeCreator {
         task.setDayLifes( relevantDayLifes );
         
         
+    }
+
+    public double getScore( DayLife dayLife ){
+        return ( 
+            dayLife.getApprovedTasks().size() * 100 ) / ( dayLife.getApprovedTasks().size() 
+                + dayLife.getTasks().size() );
     }
 
    
@@ -79,6 +83,11 @@ public class DayLifeCreator {
         return dayLifes.stream()
                         .anyMatch(daylife -> daylife.getDate().equals(date));
     }
+
+    
+
+    
+
 
 
 
