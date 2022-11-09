@@ -20,10 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betterLife.habitsBuilder.model.DayLife;
 import com.betterLife.habitsBuilder.model.Task;
-import com.betterLife.habitsBuilder.service.DayLifeCreator;
+import com.betterLife.habitsBuilder.service.DayLifeCalculatorService;
+import com.betterLife.habitsBuilder.service.DayLifeScoreService;
 import com.betterLife.habitsBuilder.service.HabitsBuilderService;
-import com.betterLife.habitsBuilder.service.OrphanDayLife;
-import com.betterLife.habitsBuilder.service.TaskFinder;
+import com.betterLife.habitsBuilder.service.OrphanDayLifeService;
+import com.betterLife.habitsBuilder.service.TaskFindAndDeleteService;
 
 @CrossOrigin( origins = "*")
 @RestController
@@ -34,13 +35,16 @@ public class habitsBuilderController {
     HabitsBuilderService habitsBuilderService;
 
     @Autowired
-    DayLifeCreator dayLifeCreator;
+    DayLifeCalculatorService dayLifeCalculatorService;
 
     @Autowired
-    TaskFinder taskFinder;
+    TaskFindAndDeleteService taskFindAndDeleteService;
 
     @Autowired
-    OrphanDayLife orphanDayLife;
+    OrphanDayLifeService orphanDayLifeService;
+
+    @Autowired
+    DayLifeScoreService dayLifeScoreService;
 
 
     @GetMapping("/sayHi")
@@ -75,17 +79,17 @@ public class habitsBuilderController {
     @PostMapping( "/task/create" )
     public ResponseEntity < Task > createTask (@RequestBody Task task){
         
-        dayLifeCreator.recalculateDayLifes(habitsBuilderService.saveTask(task));
+        dayLifeCalculatorService.recalculateDayLifes(habitsBuilderService.saveTask(task));
 
         return new ResponseEntity<>(task , HttpStatus.CREATED);
     }
-
+    
     @PutMapping( "/task/update/{taskId}" )
     public ResponseEntity < Task > updateTask (@RequestBody Task newTask, @PathVariable(value = "taskId") Long taskId ){
         Task task = habitsBuilderService.getTaskById( taskId ).get();
 
-        taskFinder.deleteAllDayLifesFromTask( task );
-        dayLifeCreator.recalculateDayLifes(habitsBuilderService.saveTask( newTask ));
+        taskFindAndDeleteService.deleteTaskFromAllDayLife( task );
+        dayLifeCalculatorService.recalculateDayLifes(habitsBuilderService.saveTask( newTask ));
 
         return new ResponseEntity<>(task , HttpStatus.CREATED);
     }
@@ -95,7 +99,7 @@ public class habitsBuilderController {
         
         Task task = habitsBuilderService.getTaskById( taskId ).get();
        
-        boolean deleteAllDayLifesFromTask = taskFinder.deleteAllDayLifesFromTask( task );
+        boolean deleteAllDayLifesFromTask = taskFindAndDeleteService.deleteTaskFromAllDayLife( task );
         if ( deleteAllDayLifesFromTask ) {
             habitsBuilderService.saveTask( task );
             habitsBuilderService.deleteTaskById( task.getId() );
@@ -112,7 +116,7 @@ public class habitsBuilderController {
         DayLife dayLife = habitsBuilderService.getDayLifeById( dayLifeId ).get();
         Task task = habitsBuilderService.getTaskById( taskId ).get();
         
-        if( taskFinder.findTaskWithinDayLife( dayLife, taskId )){
+        if( taskFindAndDeleteService.findTaskWithinDayLife( dayLife, taskId )){
             
             dayLife.getTasks().remove( task );
             dayLife.getApprovedTasks().add( task );
@@ -128,7 +132,7 @@ public class habitsBuilderController {
         DayLife dayLife = habitsBuilderService.getDayLifeById( dayLifeId ).get();
         Task task = habitsBuilderService.getTaskById( taskId ).get();
         
-        if( taskFinder.findTaskWithinDayLife(dayLife, taskId)){
+        if( taskFindAndDeleteService.findTaskWithinDayLife(dayLife, taskId)){
             dayLife.getApprovedTasks().remove(task);
             dayLife.getTasks().add(task);
             
@@ -156,7 +160,7 @@ public class habitsBuilderController {
     public double getDayLifeScore( @PathVariable( value = "dayLifeId") Long dayLifeId ){
         DayLife dayLife = habitsBuilderService.getDayLifeById( dayLifeId ).get();
 
-        return dayLifeCreator.getScore( dayLife );
+        return dayLifeScoreService.getScore( dayLife );
     }
 
     @DeleteMapping( "/daylife/delete/task/{dayLifeId}/{taskId}" )
@@ -166,11 +170,11 @@ public class habitsBuilderController {
         Task task = habitsBuilderService.getTaskById( taskId ).get();
         DayLife dayLife = habitsBuilderService.getDayLifeById( dayLifeId ).get();
 
-        boolean delete = taskFinder.deleteTaskFromDayLife(dayLife, task);
+        boolean delete = taskFindAndDeleteService.deleteTaskFromDayLife(dayLife, task);
         
         if ( delete ){ 
             habitsBuilderService.saveDayLife( dayLife );
-            orphanDayLife.deleteOrphanDayLife( dayLife );
+            orphanDayLifeService.deleteOrphanDayLife( dayLife );
         }
 
         return delete;

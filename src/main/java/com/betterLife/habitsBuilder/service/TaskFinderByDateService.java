@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import com.betterLife.habitsBuilder.model.Task;
 
 @Service
-public class TaskFinderByDate {
-    public TaskFinderByDate(){}
+public class TaskFinderByDateService {
+    public TaskFinderByDateService(){}
 
     //CHECK IF TASK CONTAINS  A DATE
     public boolean taskContainsDate( Task task, LocalDate date ){

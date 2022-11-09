@@ -13,15 +13,13 @@ import com.betterLife.habitsBuilder.model.Task;
 import lombok.extern.log4j.Log4j2;
 
 @Service
-public class DayLifeCreator {
+public class DayLifeCalculatorService {
 
     @Autowired
     HabitsBuilderService habitsBuilderService;
 
-    @Autowired
-    TaskFinder taskFinder;
 
-    public DayLifeCreator(){
+    public DayLifeCalculatorService(){
 
     }
 
@@ -32,15 +30,6 @@ public class DayLifeCreator {
         
         
     }
-
-    public double getScore( DayLife dayLife ){
-        return ( 
-            dayLife.getApprovedTasks().size() * 100 ) / ( dayLife.getApprovedTasks().size() 
-                + dayLife.getTasks().size() );
-    }
-
-   
-
 
     public ArrayList<DayLife> createDayLifesByInterval(Task task, LocalDate initialDate, LocalDate endDate){
         
@@ -76,7 +65,7 @@ public class DayLifeCreator {
         return dayLifes;
     }
 
-    public boolean dayLifeExists( LocalDate date ){
+    public boolean dayLifeExistsOnDate( LocalDate date ){
         ArrayList< DayLife > dayLifes = habitsBuilderService
             .getAllDayLife();
         

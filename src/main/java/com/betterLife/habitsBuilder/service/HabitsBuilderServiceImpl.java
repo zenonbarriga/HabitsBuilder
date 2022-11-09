@@ -17,7 +17,7 @@ import com.betterLife.habitsBuilder.repository.TaskRepository;
 public class HabitsBuilderServiceImpl implements HabitsBuilderService {
 
     @Autowired
-    TaskFinderByDate taskFinderByDate;
+    TaskFinderByDateService taskFinderByDate;
 
     @Autowired
     TaskRepository taskRepository;

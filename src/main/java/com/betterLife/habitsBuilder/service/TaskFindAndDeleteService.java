@@ -14,18 +14,18 @@ import com.betterLife.habitsBuilder.model.Task;
 
 
 @Service
-public class TaskFinder {
+public class TaskFindAndDeleteService {
 
 
-    public TaskFinder(){
+    public TaskFindAndDeleteService(){
 
     }
 
     @Autowired
-    OrphanDayLife orphanDayLife;
+    OrphanDayLifeService orphanDayLife;
 
     @Autowired
-    TaskFinderByDate taskFinderByDate;
+    TaskFinderByDateService taskFinderByDate;
 
     
 
@@ -54,7 +54,7 @@ public class TaskFinder {
          && ( removeDayLife || removeApprovedDayLife );
     }
 
-    public boolean deleteAllDayLifesFromTask( Task task ){
+    public boolean deleteTaskFromAllDayLife( Task task ){
 
         ArrayList < DayLife > dayLifes = (ArrayList<DayLife>) task.getDayLifes().stream()
                                 .collect(Collectors.toList());

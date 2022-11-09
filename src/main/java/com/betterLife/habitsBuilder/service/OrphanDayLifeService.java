@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import com.betterLife.habitsBuilder.model.DayLife;
 
 @Service
-public class OrphanDayLife {
+public class OrphanDayLifeService {
 
     @Autowired
     HabitsBuilderService habitsBuilderService;
 
-    public OrphanDayLife(){
+    public OrphanDayLifeService(){
 
     }
 

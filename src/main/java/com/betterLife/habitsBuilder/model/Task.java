@@ -76,12 +76,12 @@ public class Task {
     @Column
     private boolean sunday = false;
  
-    //@JsonIgnore
+    @JsonIgnore
     @ManyToMany
     (mappedBy = "approvedTasks")
     private List<DayLife> ApprovedDayLifes = new ArrayList<>();
 
-     //@JsonIgnore
+     @JsonIgnore
      @ManyToMany
      (mappedBy = "tasks")
      private List<DayLife> dayLifes = new ArrayList<>();

@@ -35,12 +35,12 @@ public class DayLife {
 
     @ManyToMany
     @JoinColumn(name = "approved_task_id")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Task> approvedTasks = new ArrayList<>();
 
     @ManyToMany
     @JoinColumn(name = "task_id")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Task> tasks = new ArrayList<>();
 
    
